@@ -3,8 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:kantin_app/pages/admin_food_page.dart';
 import 'package:kantin_app/pages/cart_page.dart';
 import 'package:kantin_app/pages/home_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: 'https://akrzqrmfgsvgqgpczwiw.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrcnpxcm1mZ3N2Z3FncGN6d2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA0Njc5MTgsImV4cCI6MjA0NjA0MzkxOH0.RpKztdynh9WsvygHthzYGEkmY3jdywEuoO0jULaSC-8',
+  );
+
   runApp(const MainApp());
 }
 
