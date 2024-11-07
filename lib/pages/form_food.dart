@@ -8,6 +8,7 @@ class FormFood extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SingleChildScrollView(
           child: Column(
@@ -51,9 +52,15 @@ class FormFood extends StatelessWidget {
                       label: "Kategori Produk",
                       placeholder: "Makanan",
                     ),
-                    const FormFoodInput(
-                      label: "Image",
-                      placeholder: "Choose file",
+                    const InputDecorator(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.all(10),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 40),

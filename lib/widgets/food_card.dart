@@ -38,7 +38,7 @@ class FoodCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(20), // Image border
                 child: SizedBox.fromSize(
-                  size: Size.fromRadius(70), // Image radius
+                  size: Size.fromRadius(50), // Image radius
                   child: Image.asset(
                     image,
                     fit: BoxFit.cover,
