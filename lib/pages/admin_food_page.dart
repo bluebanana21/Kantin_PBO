@@ -13,7 +13,7 @@ class AdminFoodPage extends StatelessWidget {
         body: Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -39,13 +39,13 @@ class AdminFoodPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: ElevatedButton.icon(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const FormFood(),
+                          builder: (context) => FormFood(),
                         ),
                       );
                     },
@@ -65,9 +65,9 @@ class AdminFoodPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(15),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Foto"),
@@ -77,13 +77,13 @@ class AdminFoodPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Divider(),
+                const Divider(),
                 const FormFoodEntry(
                   image: "assets/burger.jpeg",
                   name: "Burger king medium",
                   price: "50.000",
                 ),
-                Divider(),
+                const Divider(),
                 const FormFoodEntry(
                   image: "assets/burger.jpeg",
                   name: "Burger king medium",

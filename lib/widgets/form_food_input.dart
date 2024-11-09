@@ -33,23 +33,37 @@ class FormFoodInput extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(20.0),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: placeholder,
-              filled: true,
-              fillColor: Colors.white60,
-              contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: BorderSide.none, // Remove the border line
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: BorderSide.none, // Remove the border line
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: BorderSide.none, // Remove the border line
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 8,
+                  offset: Offset(0, 4),
+                ),
+              ],
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: placeholder,
+                filled: true,
+                fillColor: Colors.white60,
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide.none, // Remove the border line
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide.none, // Remove the border line
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide.none, // Remove the border line
+                ),
               ),
             ),
           ),

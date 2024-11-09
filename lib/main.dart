@@ -5,7 +5,7 @@ import 'package:kantin_app/pages/cart_page.dart';
 import 'package:kantin_app/pages/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Supabase.initialize(
@@ -16,6 +16,8 @@ void main() async {
 
   runApp(const MainApp());
 }
+
+final SupabaseClient supabase = Supabase.instance.client;
 
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
