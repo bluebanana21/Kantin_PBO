@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+final SupabaseClient supabase = Supabase.instance.client;
 
 class FormFoodInput extends StatelessWidget {
+  
+
   final dynamic label;
   final dynamic placeholder;
 
@@ -8,6 +13,7 @@ class FormFoodInput extends StatelessWidget {
     super.key,
     required this.label,
     required this.placeholder,
+    
   });
 
   @override

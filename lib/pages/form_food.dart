@@ -3,9 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kantin_app/widgets/form_food_input.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+final SupabaseClient supabase = Supabase.instance.client;
 
 class FormFood extends StatelessWidget {
   FormFood({super.key});
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _imageController = TextEditingController();
 
   File? _selectedImage;
 
@@ -171,8 +179,23 @@ class FormFood extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 40),
                       child: Center(
                         child: ElevatedButton(
-                          onPressed: () {
-                            // Action for the Checkout button
+                          onPressed: () async {
+                            final name = _nameController.text;
+                            final price = int.parse(_priceController.text);
+                            final category = _categoryController.text;
+                            final quantity =
+                                int.parse(_quantityController.text);
+                            final image = _imageController;
+
+                            await supabase.from('food').insert(
+                              {
+                                'Nama': name,
+                                'Harga': price,
+                                'Kategori': category,
+                                'qty': quantity,
+                                'Image': image
+                              },
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
