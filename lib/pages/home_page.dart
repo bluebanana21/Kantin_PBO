@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
         body: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -68,12 +68,12 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 60,
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(12),
-              child: const Align(
+              child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
                   "All Food",

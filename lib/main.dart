@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:kantin_app/pages/admin_food_page.dart';
 import 'package:kantin_app/pages/cart_page.dart';
@@ -6,9 +7,13 @@ import 'package:kantin_app/pages/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 const supabaseUrl = 'https://akrzqrmfgsvgqgpczwiw.supabase.co';
-const supabaseKey = String.fromEnvironment('SUPABASE_KEY');
+const supabaseKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrcnpxcm1mZ3N2Z3FncGN6d2l3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA0Njc5MTgsImV4cCI6MjA0NjA0MzkxOH0.RpKztdynh9WsvygHthzYGEkmY3jdywEuoO0jULaSC-8';
 
 Future<void> main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
   runApp(const MainApp());
 }
@@ -20,9 +25,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MainScreen(),
+      home: MainScreen(),
     );
   }
 }
@@ -35,6 +40,19 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  @override
+  void initState() {
+    super.initState();
+    initializations();
+  }
+
+  void initializations() async {
+    print("pausing...");
+    await Future.delayed(const Duration(seconds: 3));
+    print("unpausing...");
+    FlutterNativeSplash.remove();
+  }
+
   void _onItemPressed(int index) {
     Widget page;
 

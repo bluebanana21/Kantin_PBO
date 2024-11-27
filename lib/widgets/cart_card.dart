@@ -45,10 +45,10 @@ class CartCard extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Icon(Icons.add),
+                      child: const Icon(Icons.add),
                     ),
                   ),
-                  Text("1"),
+                  const Text("1"),
                   Transform.scale(
                     scale: 0.5,
                     child: FloatingActionButton(
@@ -59,7 +59,7 @@ class CartCard extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Icon(Icons.remove),
+                      child: const Icon(Icons.remove),
                     ),
                   ),
                 ],

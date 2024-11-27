@@ -4,8 +4,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 final SupabaseClient supabase = Supabase.instance.client;
 
 class FormFoodInput extends StatelessWidget {
-  
-
   final dynamic label;
   final dynamic placeholder;
 
@@ -13,12 +11,10 @@ class FormFoodInput extends StatelessWidget {
     super.key,
     required this.label,
     required this.placeholder,
-    
   });
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       child: Column(children: [
         Padding(
@@ -29,7 +25,7 @@ class FormFoodInput extends StatelessWidget {
               // color: Colors.red,
               child: Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -46,7 +42,7 @@ class FormFoodInput extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.5),
                   spreadRadius: 2,
                   blurRadius: 8,
-                  offset: Offset(0, 4),
+                  offset: const Offset(0, 4),
                 ),
               ],
               borderRadius: BorderRadius.circular(30.0),
@@ -57,7 +53,7 @@ class FormFoodInput extends StatelessWidget {
                 filled: true,
                 fillColor: Colors.white60,
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none, // Remove the border line

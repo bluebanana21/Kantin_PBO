@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_native_splash: ^2.4.3
   image_picker: ^1.1.2
   supabase_flutter: ^2.8.0
 
@@ -21,3 +22,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+
+flutter_native_splash:
+  color: "#d4e4ed"
+  

@@ -45,12 +45,12 @@ class AdminFoodPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FormFood(),
+                          builder: (context) => const FormFood(),
                         ),
                       );
                     },
                     label: const Text(
-                      "Add Data",
+                      "Add Food",
                       style: TextStyle(color: Colors.white),
                     ),
                     icon: const Icon(
