@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:kantin_app/main.dart';
 import 'package:kantin_app/pages/form_food.dart';
 import 'package:kantin_app/widgets/form_food_entry.dart';
 
 class AdminFoodPage extends StatelessWidget {
   const AdminFoodPage({super.key});
+
+  Future<List<dynamic>> fetchData() async {
+    final response = await supabase.from('Makanan').select('*');
+    return response as List<dynamic>;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,29 +71,65 @@ class AdminFoodPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Padding(
-                  padding: EdgeInsets.all(15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Foto"),
-                      Text("Nama produk"),
-                      Text("harga"),
-                      Text("Aksi"),
-                    ],
-                  ),
-                ),
-                const Divider(),
-                const FormFoodEntry(
-                  image: "assets/burger.jpeg",
-                  name: "Burger king medium",
-                  price: "50.000",
-                ),
-                const Divider(),
-                const FormFoodEntry(
-                  image: "assets/burger.jpeg",
-                  name: "Burger king medium",
-                  price: "50.000",
+                FutureBuilder(
+                  future: fetchData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Text('No data found');
+                    } else {
+                      final data = snapshot.data!;
+                      return DataTable(
+                        columns: const <DataColumn>[
+                          DataColumn(label: Text("Image")),
+                          DataColumn(label: Text("Name")),
+                          DataColumn(label: Text("Category")),
+                          DataColumn(label: Text("Price")),
+                          DataColumn(label: Text("Actions")),
+                        ],
+                        rows: data.map<DataRow>(
+                          (item) {
+                            final imageUrl = item['Image_url'] ??
+                                'https://via.placeholder.com/150';
+                            return DataRow(
+                              cells: [
+                                DataCell(
+                                  Image.network(
+                                    imageUrl,
+                                    width: 50,
+                                    height: 50,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const Icon(Icons.broken_image),
+                                  ),
+                                ),
+                                DataCell(Text(item['Nama'] ?? 'N/A')),
+                                DataCell(Text(item['Kategori'] ?? 'N/A')),
+                                DataCell(
+                                    Text(item['Harga']?.toString() ?? 'N/A')),
+                                DataCell(
+                                  IconButton(
+                                    onPressed: () async {
+                                      await supabase
+                                          .from('Makanan')
+                                          .delete()
+                                          .eq('id', item['id']);
+                                      // setState(() {});
+                                    },
+                                    icon: const Icon(Icons.delete),
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ).toList(),
+                      );
+                    }
+                  },
                 ),
               ],
             ),

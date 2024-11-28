@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kantin_app/main.dart';
 
 class FormFood extends StatefulWidget {
-  const FormFood({Key? key}) : super(key: key);
+  const FormFood({super.key});
 
   @override
   State<FormFood> createState() => _FormFoodState();
@@ -13,6 +13,10 @@ class FormFood extends StatefulWidget {
 
 class _FormFoodState extends State<FormFood> {
   File? _imageFile;
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+
   String? _selectedCategory; // To store the selected category
   final List<String> _categories = [
     "Drinks",
@@ -33,16 +37,18 @@ class _FormFoodState extends State<FormFood> {
     }
   }
 
-  Future uploadImage() async {
-    if (_imageFile == null) return;
+  Future<String?> uploadImage(String path) async {
+    if (_imageFile == null) return null;
 
-    final fileName = DateTime.now().millisecondsSinceEpoch;
-    final path = 'uploads/$fileName';
-    await supabase.storage.from('foodImages').upload(path, _imageFile!);
+    final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final uploadPath = 'uploads/$fileName';
+
+    final response = await supabase.storage
+        .from('foodImages')
+        .upload(uploadPath, _imageFile!);
+
+    return supabase.storage.from('foodImages').getPublicUrl(uploadPath);
   }
-
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -124,36 +130,33 @@ class _FormFoodState extends State<FormFood> {
                           final price = int.tryParse(_priceController.text);
                           final category = _selectedCategory;
 
-                          if (name.isEmpty ||
-                              price == null ||
-                              category == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Please complete all fields!"),
-                              ),
-                            );
-                            return;
-                          }
+                          var imageUrl = await uploadImage('uploads');
+                          if (imageUrl == null) return;
+
+                          // if (name.isEmpty ||
+                          //     price == null ||
+                          //     category == null) {
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //     const SnackBar(
+                          //       content: Text("Please complete all fields!"),
+                          //     ),
+                          //   );
+                          //   return;
+                          // }
 
                           await supabase.from('Makanan').insert({
                             'Nama': name,
                             'Harga': price,
                             'Kategori': category,
+                            'Image_url': imageUrl,
                           });
-
-                          await uploadImage();
 
                           setState(() {
                             _nameController.clear();
                             _priceController.clear();
                             _selectedCategory = null;
+                            imageUrl = null;
                           });
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Food item added successfully!"),
-                            ),
-                          );
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(

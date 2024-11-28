@@ -58,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
 
     switch (index) {
       case 0:
-        page = const HomePage();
+        page = HomePage();
         break;
       case 1:
         page = const CartPage();
@@ -67,7 +67,7 @@ class _MainScreenState extends State<MainScreen> {
         page = const AdminFoodPage();
         break;
       default:
-        page = const HomePage();
+        page = HomePage();
     }
 
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
@@ -76,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const HomePage(),
+      body: HomePage(),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
