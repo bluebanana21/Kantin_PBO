@@ -39,9 +39,11 @@ class FoodCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20), // Image border
                 child: SizedBox.fromSize(
                   size: Size.fromRadius(50), // Image radius
-                  child: Image.asset(
+                  child: Image.network(
                     image,
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.broken_image),
                   ),
                 ),
               ),

@@ -58,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
 
     switch (index) {
       case 0:
-        page = HomePage();
+        page = MainApp();
         break;
       case 1:
         page = const CartPage();

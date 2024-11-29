@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kantin_app/main.dart';
@@ -17,32 +16,30 @@ class _FormFoodState extends State<FormFood> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
 
-  String? _selectedCategory; // To store the selected category
+  String? _selectedCategory;
   final List<String> _categories = [
     "Drinks",
     "Snacks",
     "Main Course",
     "Desserts"
-  ]; // Example categories
+  ];
 
   Future pickImage() async {
     final ImagePicker picker = ImagePicker();
-
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
     if (image != null) {
-      setState(() {
-        _imageFile = File(image.path);
-      });
+      setState(
+        () {
+          _imageFile = File(image.path);
+        },
+      );
     }
   }
 
   Future<String?> uploadImage(String path) async {
     if (_imageFile == null) return null;
-
     final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
     final uploadPath = 'uploads/$fileName';
-
     final response = await supabase.storage
         .from('foodImages')
         .upload(uploadPath, _imageFile!);
@@ -52,136 +49,174 @@ class _FormFoodState extends State<FormFood> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Row(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: <Widget>[
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BackButton(
+                  FloatingActionButton(
+                    backgroundColor: Colors.white,
                     onPressed: () {
                       Navigator.pop(context);
                     },
+                    mini: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.red,
+                      size: 25,
+                    ),
                   ),
                   FloatingActionButton(
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                    backgroundColor: Colors.white,
                     onPressed: () {},
                     mini: true,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Icon(Icons.person_outline,
-                        color: Colors.black, size: 25),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(labelText: "Name"),
-                  ),
-                  TextField(
-                    controller: _priceController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: "Price"),
-                  ),
-
-                  // Dropdown for category selection
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: DropdownButtonFormField<String>(
-                      value: _selectedCategory,
-                      hint: const Text("Select Category"),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedCategory = newValue;
-                        });
-                      },
-                      items: _categories
-                          .map((category) => DropdownMenuItem(
-                                value: category,
-                                child: Text(category),
-                              ))
-                          .toList(),
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Category",
-                      ),
-                    ),
-                  ),
-
-                  ElevatedButton(
-                    onPressed: pickImage,
-                    child: const Text("pick image"),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40),
-                    child: Center(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          final name = _nameController.text;
-                          final price = int.tryParse(_priceController.text);
-                          final category = _selectedCategory;
-
-                          var imageUrl = await uploadImage('uploads');
-                          if (imageUrl == null) return;
-
-                          // if (name.isEmpty ||
-                          //     price == null ||
-                          //     category == null) {
-                          //   ScaffoldMessenger.of(context).showSnackBar(
-                          //     const SnackBar(
-                          //       content: Text("Please complete all fields!"),
-                          //     ),
-                          //   );
-                          //   return;
-                          // }
-
-                          await supabase.from('Makanan').insert({
-                            'Nama': name,
-                            'Harga': price,
-                            'Kategori': category,
-                            'Image_url': imageUrl,
-                          });
-
-                          setState(() {
-                            _nameController.clear();
-                            _priceController.clear();
-                            _selectedCategory = null;
-                            imageUrl = null;
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 100,
-                            vertical: 15,
-                          ),
-                          backgroundColor: Colors.blue, // Background color
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: const Text(
-                          'Submit',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
+                    child: const Icon(
+                      Icons.person_outline,
+                      color: Colors.black,
+                      size: 25,
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+              TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: "Food Name",
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              TextField(
+                controller: _priceController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Price",
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              DropdownButtonFormField<String>(
+                value: _selectedCategory,
+                hint: const Text("Select Category"),
+                onChanged: (String? newValue) {
+                  setState(
+                    () {
+                      _selectedCategory = newValue;
+                    },
+                  );
+                },
+                items: _categories
+                    .map(
+                      (category) => DropdownMenuItem(
+                        value: category,
+                        child: Text(category),
+                      ),
+                    )
+                    .toList(),
+                decoration: InputDecoration(
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  labelText: "Category",
+                ),
+              ),
+              const SizedBox(height: 15),
+              GestureDetector(
+                onTap: pickImage,
+                child: Container(
+                  width: double.infinity,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: _imageFile == null
+                      ? const Center(
+                          child: Text(
+                            "Tap to pick image",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        )
+                      : Image.file(
+                          _imageFile!,
+                          fit: BoxFit.cover,
+                        ),
+                ),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () async {
+                  final name = _nameController.text;
+                  final price = int.tryParse(_priceController.text);
+                  final category = _selectedCategory;
+
+                  var imageUrl = await uploadImage('uploads');
+                  if (imageUrl == null) return;
+
+                  await supabase.from('Makanan').insert(
+                    {
+                      'Nama': name,
+                      'Harga': price,
+                      'Kategori': category,
+                      'Image_url': imageUrl,
+                    },
+                  );
+
+                  setState(
+                    () {
+                      _nameController.clear();
+                      _priceController.clear();
+                      _selectedCategory = null;
+                      imageUrl = null;
+                    },
+                  );
+
+                  Navigator.of(context).pop();
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 100,
+                    vertical: 15,
+                  ),
+                  backgroundColor: Colors.lightBlue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  elevation: 5,
+                ),
+                child: const Text(
+                  'Submit',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

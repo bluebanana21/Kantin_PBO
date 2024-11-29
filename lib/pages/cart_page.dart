@@ -15,10 +15,20 @@ class CartPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BackButton(
+                  FloatingActionButton(
+                    backgroundColor: Colors.white,
                     onPressed: () {
                       Navigator.pop(context);
                     },
+                    mini: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.red,
+                      size: 25,
+                    ),
                   ),
                   const Text(
                     "Cart",
