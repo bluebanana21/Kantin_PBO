@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:kantin_app/main.dart';
 
 class FoodCard extends StatelessWidget {
+  final dynamic id;
+  final dynamic category;
   final dynamic image;
   final dynamic name;
   final dynamic price;
 
   const FoodCard({
     super.key,
+    required this.id,
+    required this.category,
     required this.image,
     required this.name,
     required this.price,
@@ -32,44 +37,56 @@ class FoodCard extends StatelessWidget {
         ],
       ),
       child: Column(
+        mainAxisAlignment:
+            MainAxisAlignment.center, // Centers content vertically
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20), // Image border
-                child: SizedBox.fromSize(
-                  size: Size.fromRadius(50), // Image radius
-                  child: Image.network(
-                    image,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) =>
-                        const Icon(Icons.broken_image),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20), // Image border
+            child: SizedBox(
+              width: 100, // Adjust width to match the container or desired size
+              height: 100, // Adjust height to keep it proportional
+              child: Image.network(
+                image,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.broken_image),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8), // Add spacing between image and text
+          Text(name, textAlign: TextAlign.center), // Ensures centered text
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(price),
+                Transform.scale(
+                  scale: 0.7,
+                  child: IconButton(
+                    onPressed: () async {
+                      print("moved to cart");
+                      await supabase.from('cart').insert(
+                        {
+                          'food_id': id,
+                          'food_name': name,
+                          'food_price': price,
+                          'food_category': category,
+                          'food_image': image,
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.add),
+                    iconSize: 25,
+                    style: IconButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              Text(name),
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(price),
-                    Transform.scale(
-                      scale: 0.7,
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.add),
-                        iconSize: 25,
-                        style: IconButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

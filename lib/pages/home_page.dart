@@ -143,9 +143,11 @@ class _HomePageState extends State<HomePage> {
                           final imageUrl = item['Image_url'] ??
                               'https://via.placeholder.com/150';
                           return FoodCard(
-                            image: imageUrl,
+                            id: item['id'] ?? 'N/A',
                             name: item['Nama'] ?? 'N/A',
+                            category: item['Kategori'] ?? 'N/A',
                             price: item['Harga'].toString() ?? 'N/A',
+                            image: imageUrl,
                           );
                         },
                       ),
